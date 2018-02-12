@@ -1,0 +1,22 @@
+# circle.yml
+machine:
+  python:
+    version: 2.7.10
+  services:
+    - docker
+
+dependencies:
+  override:
+    - pip install awscli
+    - curl -L -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5rc1/jq-linux-x86_64-static && chmod +x ~/bin/jq
+    - ./build.sh
+
+test:
+  override:
+    - echo Skip
+
+deployment:
+  develop:
+    branch: develop
+    commands:
+      - ./deploy.sh development `cat VERSION`
